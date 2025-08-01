@@ -356,7 +356,7 @@ async def final_report_generation(state: AgentState, config: RunnableConfig):
         **cleared_state
     }
 
-deep_researcher_builder = StateGraph(AgentState, input=AgentInputState, config_schema=Configuration)
+deep_researcher_builder = StateGraph(AgentState, input_schema=AgentInputState, config_schema=Configuration)
 deep_researcher_builder.add_node("clarify_with_user", clarify_with_user)
 deep_researcher_builder.add_node("write_research_brief", write_research_brief)
 deep_researcher_builder.add_node("research_supervisor", supervisor_subgraph)
