@@ -33,6 +33,16 @@ export function ChatMessagesView({
 
     return (
       <div key={`${message.id || index}`} className="space-y-4">
+        {/* Show historical activities BEFORE AI messages */}
+        {!isUser && message.id && historicalActivities[message.id] && (
+          <div className="ml-11">
+            <ResearchTimeline
+              processedEvents={historicalActivities[message.id]}
+              isLoading={false}
+            />
+          </div>
+        )}
+
         <div className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
           {!isUser && (
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-1">
@@ -129,16 +139,6 @@ export function ChatMessagesView({
             </div>
           )}
         </div>
-
-        {/* Show historical activities for completed AI messages */}
-        {!isUser && message.id && historicalActivities[message.id] && (
-          <div className="ml-11">
-            <ResearchTimeline
-              processedEvents={historicalActivities[message.id]}
-              isLoading={false}
-            />
-          </div>
-        )}
       </div>
     );
   };
@@ -149,7 +149,7 @@ export function ChatMessagesView({
         <div className="space-y-6 max-w-4xl mx-auto">
           {messages.map((message, index) => renderMessage(message, index))}
           
-          {/* Show live activity timeline when loading */}
+          {/* Show live activity timeline when loading - BEFORE any new AI response */}
           {isLoading && liveActivityEvents.length > 0 && (
             <div className="ml-11">
               <ResearchTimeline
